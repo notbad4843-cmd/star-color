@@ -15,7 +15,7 @@ window.LESSON_CONFIG = {
     {
       title: "별의 색깔은 왜 다를까?",
       youtube: "",
-      file: "star-color.mp4",
+      file: "star_color.mp4",
       note: "영상을 보며 별의 색깔과 표면 온도의 관계를 찾아보세요."
     }
   ]
