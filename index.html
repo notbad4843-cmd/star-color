@@ -226,9 +226,16 @@ dialog#doneDialog::backdrop{background:rgba(10,14,40,.55)}
     <div id="introQs"></div>
   </section>
 
-  <!-- 3 개념 -->
+  <!-- 3 영상 -->
+  <section class="card" id="s-video">
+    <div class="sec-head"><span class="sec-num">03</span><h2>영상 학습</h2></div>
+    <div id="videoArea"></div>
+    <label class="check"><input type="checkbox" id="videoWatched"> 영상을 끝까지 시청했어요</label>
+  </section>
+
+  <!-- 4 개념 -->
   <section class="card" id="s-concept">
-    <div class="sec-head"><span class="sec-num">03</span><h2>개념 학습</h2><span class="pill" id="conceptPill">빈칸 9개</span></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2>개념 학습</h2><span class="pill" id="conceptPill">빈칸 9개</span></div>
 
     <div class="spectrum">
       <h3 style="font-size:20px">온도를 바꿔 별의 색을 관찰해 보세요</h3>
@@ -268,9 +275,9 @@ dialog#doneDialog::backdrop{background:rgba(10,14,40,.55)}
     </div>
   </section>
 
-  <!-- 4 정리퀴즈 -->
+  <!-- 5 정리퀴즈 -->
   <section class="card" id="s-final">
-    <div class="sec-head"><span class="sec-num">04</span><h2>정리퀴즈</h2><span class="pill" id="finalPill">5문항</span></div>
+    <div class="sec-head"><span class="sec-num">05</span><h2>정리퀴즈</h2><span class="pill" id="finalPill">5문항</span></div>
     <p class="lead">혼자 힘으로 풀어 보세요. 모두 고른 뒤 ‘채점하기’를 누르면 정답과 해설이 나와요.</p>
     <div id="finalQs"></div>
     <div class="row">
@@ -280,12 +287,6 @@ dialog#doneDialog::backdrop{background:rgba(10,14,40,.55)}
     </div>
   </section>
 
-  <!-- 5 영상 -->
-  <section class="card" id="s-video">
-    <div class="sec-head"><span class="sec-num">05</span><h2>영상 학습</h2></div>
-    <div id="videoArea"></div>
-    <label class="check"><input type="checkbox" id="videoWatched"> 영상을 끝까지 시청했어요</label>
-  </section>
 
   <!-- 6 한줄 정리 -->
   <section class="card" id="s-oneline">
@@ -304,11 +305,11 @@ dialog#doneDialog::backdrop{background:rgba(10,14,40,.55)}
   <!-- 7 제출 -->
   <section class="card" id="s-submit">
     <div class="sec-head"><span class="sec-num">07</span><h2>선생님 확인받기</h2></div>
-    <p class="lead">모든 단계를 마치고 이름과 반·번호를 쓰면 완료 화면이 떠요. 그 화면을 선생님께 보여 드리세요.</p>
+    <p class="lead">모든 단계를 마치고 이름과 학번을 쓰면 완료 화면이 떠요. 그 화면을 선생님께 보여 드리세요.</p>
     <ul class="checklist" id="checklist"></ul>
     <div class="row">
       <div class="field"><label for="stuName">이름</label><input class="input" id="stuName" placeholder="홍길동" autocomplete="name"></div>
-      <div class="field"><label for="stuNo">반 · 번호</label><input class="input" id="stuNo" placeholder="3반 12번"></div>
+      <div class="field"><label for="stuNo">학번</label><input class="input" id="stuNo" placeholder="30312" inputmode="numeric"></div>
     </div>
     <div class="row">
       <button class="btn" id="submitBtn" type="button">학습 완료하기</button>
@@ -335,8 +336,8 @@ dialog#doneDialog::backdrop{background:rgba(10,14,40,.55)}
 "use strict";
 /* ---------- content ---------- */
 const STEPS = [
-  {id:"s-goals",label:"목표"},{id:"s-intro",label:"도입"},{id:"s-concept",label:"개념"},
-  {id:"s-final",label:"정리퀴즈"},{id:"s-video",label:"영상"},{id:"s-oneline",label:"한줄"},{id:"s-submit",label:"확인"}];
+  {id:"s-goals",label:"목표"},{id:"s-intro",label:"도입"},{id:"s-video",label:"영상"},
+  {id:"s-concept",label:"개념"},{id:"s-final",label:"정리퀴즈"},{id:"s-oneline",label:"한줄"},{id:"s-submit",label:"확인"}];
 
 const INTRO = [
   {q:"대장간에서 쇠막대를 가열하면, 온도가 올라갈수록 쇠의 색은 어떻게 변할까요?",
@@ -602,7 +603,7 @@ $name.addEventListener("input",()=>{S.name=$name.value;save();renderChecklist();
 $no.addEventListener("input",()=>{S.no=$no.value;save();renderChecklist();});
 
 function renderChecklist(){
-  const items=[["학습목표",S.goal],["도입퀴즈",S.introDone],["개념 빈칸",S.conceptScore!==null],["정리퀴즈",S.finalScore!==null],["영상 시청",S.video],["한줄 정리",S.oneScore!==null],["별 이야기",factsDone()],["이름·번호",!!S.name.trim()&&!!S.no.trim()]];
+  const items=[["학습목표",S.goal],["도입퀴즈",S.introDone],["영상 시청",S.video],["개념 빈칸",S.conceptScore!==null],["정리퀴즈",S.finalScore!==null],["한줄 정리",S.oneScore!==null],["별 이야기",factsDone()],["이름·학번",!!S.name.trim()&&!!S.no.trim()]];
   const ul=$("checklist"); ul.textContent="";
   items.forEach(([n,ok])=>ul.append(el("li",{class:ok?"ok":""},[document.createTextNode(ok?"✓ ":"○ "),document.createTextNode(n)])));
   const missing=items.filter(i=>!i[1]).map(i=>i[0]);
@@ -620,7 +621,7 @@ function renderStatus(){
 }
 function showDone(rec){
   const g=$("doneGrid"); g.textContent="";
-  [["이름",rec.name],["반·번호",rec.classNo],["도입퀴즈",rec.intro],["개념 빈칸",rec.concept],["정리퀴즈",rec.final],["한줄 정리",rec.oneLine],["영상 시청",rec.video],["별 이야기",rec.facts],["완료 시각",fmtTime(rec.doneAt)]]
+  [["이름",rec.name],["학번",rec.classNo],["도입퀴즈",rec.intro],["영상 시청",rec.video],["개념 빈칸",rec.concept],["정리퀴즈",rec.final],["한줄 정리",rec.oneLine],["별 이야기",rec.facts],["완료 시각",fmtTime(rec.doneAt)]]
     .forEach(([k,v])=>{g.append(el("dt",{text:k}),el("dd",{text:v}));});
   $("doneNote").textContent = "이 화면을 선생님께 보여 드리고 확인을 받으세요.";
   const d=$("doneDialog");
